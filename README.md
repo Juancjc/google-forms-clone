@@ -4,7 +4,7 @@
 ## Rodar
 
 ```bash
-npm install express mongoose body-parser
+npm run start
 
 node serve.js
 ```

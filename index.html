@@ -103,6 +103,26 @@
       border: 2px solid #007bff;
       margin-bottom: 20px;
     }
+    .container {
+      position: relative;
+    }
+    .add-question-btn {
+      position: absolute;
+      top: 0;
+      right: -60px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+    }
+    .question-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -114,7 +134,6 @@
       <div id="questionsContainer" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
         <!-- Conteúdo das perguntas será adicionado aqui -->
       </div>
-      <button type="button" onclick="addQuestion()">Add Question</button>
       <button type="submit">Create Form</button>
     </form>
     
@@ -122,6 +141,8 @@
     
     <h2>Preview</h2>
     <div id="preview"></div>
+
+    <button class="add-question-btn" type="button" onclick="addQuestion()">+</button>
   </div>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
