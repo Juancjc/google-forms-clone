@@ -1,0 +1,316 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Forms Clone</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .question-inputs {
+      display: flex;
+      align-items: center;
+    }
+
+    .question-inputs input[type="text"] {
+      flex: 1;
+    }
+
+    .question-inputs select {
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #formsList {
+      margin-top: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 5px;
+    }
+    /* Estilos CSS (mantidos da versão anterior) */
+    .choices-input {
+      margin-top: 5px;
+    }
+    .choice {
+      margin-bottom: 5px;
+    }
+    .choice button {
+      margin-left: 5px;
+    }
+        /* Estilos CSS (mantidos da versão anterior) */
+    .draggable {
+      cursor: move;
+      border-radius: 8px;
+      border: 2px solid #007bff;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Google Forms Clone</h1>
+    
+    <form id="createForm">
+      <input type="text" name="title" placeholder="Title">
+      <div id="questionsContainer" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
+        <!-- Conteúdo das perguntas será adicionado aqui -->
+      </div>
+      <button type="button" onclick="addQuestion()">Add Question</button>
+      <button type="submit">Create Form</button>
+    </form>
+    
+    <div id="formsList"></div>
+    
+    <h2>Preview</h2>
+    <div id="preview"></div>
+  </div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+      dragSrcEl = this;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.outerHTML);
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function handleDragEnter(e) {
+      this.classList.add('over');
+    }
+
+    function handleDragLeave(e) {
+      this.classList.remove('over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      if (dragSrcEl !== this) {
+        const dropTarget = this.parentElement;
+        const dragSource = dragSrcEl.parentElement;
+        const dropIndex = Array.from(dropTarget.children).indexOf(this);
+        const dragIndex = Array.from(dragSource.children).indexOf(dragSrcEl);
+
+        if (dropTarget === dragSource && dropIndex > dragIndex) {
+          dropTarget.insertBefore(dragSrcEl, this.nextSibling);
+        } else {
+          dropTarget.insertBefore(dragSrcEl, this);
+        }
+      }
+      updatePreview();
+    }
+
+    function handleDragEnd() {
+      this.classList.remove('over');
+    }
+
+    function allowDrop(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function addChoice(button) {
+      const choicesDiv = button.parentElement.querySelector('.choices');
+      const choiceInput = document.createElement('input');
+      choiceInput.type = 'text';
+      choiceInput.name = 'choices[]';
+      choiceInput.placeholder = 'Choice';
+      choicesDiv.appendChild(choiceInput);
+      updatePreview();
+    }
+
+    function addQuestion() {
+      const questionsContainer = document.getElementById('questionsContainer');
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('draggable');
+      questionDiv.setAttribute('draggable', true);
+      questionDiv.addEventListener('dragstart', handleDragStart);
+      questionDiv.addEventListener('dragenter', handleDragEnter);
+      questionDiv.addEventListener('dragover', handleDragOver);
+      questionDiv.addEventListener('dragleave', handleDragLeave);
+      questionDiv.addEventListener('drop', handleDrop);
+      questionDiv.addEventListener('dragend', handleDragEnd);
+
+      const questionInput = document.createElement('input');
+      questionInput.type = 'text';
+      questionInput.name = 'questions[]';
+      questionInput.placeholder = 'Question';
+
+      const typeSelect = document.createElement('select');
+      typeSelect.name = 'types[]';
+      const types = ['text', 'number', 'date', 'file', 'multiple_choice'];
+      types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        typeSelect.appendChild(option);
+      });
+      typeSelect.addEventListener('change', function() {
+        handleTypeSelectChange(this);
+        showChoicesInput(this);
+        updatePreview();
+      });
+
+      const choicesInput = document.createElement('div');
+      choicesInput.classList.add('choices-input');
+      choicesInput.id = 'choicesInput'; // Adicionando ID para referência
+      const choicesDiv = document.createElement('div');
+      choicesDiv.classList.add('choices');
+      const addChoiceButton = document.createElement('button');
+      addChoiceButton.type = 'button';
+      addChoiceButton.textContent = 'Add Choice';
+      addChoiceButton.addEventListener('click', function() {
+        addChoice(this);
+      });
+      choicesInput.appendChild(choicesDiv);
+      choicesInput.appendChild(addChoiceButton);
+
+      questionDiv.appendChild(questionInput);
+      questionDiv.appendChild(typeSelect);
+      questionDiv.appendChild(choicesInput);
+
+      questionsContainer.appendChild(questionDiv);
+      updatePreview();
+    }
+
+    const createForm = document.getElementById('createForm');
+    const formsList = document.getElementById('formsList');
+    const previewDiv = document.getElementById('preview');
+
+    createForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(createForm);
+      const title = formData.get('title');
+      const questions = Array.from(formData.getAll('questions[]'));
+      const types = Array.from(formData.getAll('types[]'));
+      const choices = Array.from(formData.getAll('choices[]'));
+      const form = { title, questions: questions.map((question, index) => ({ question, type: types[index], choices: types[index] === 'multiple_choice' ? Array.from(choices.splice(0, choices.indexOf(''))) : undefined })) };
+      await axios.post('/api/forms', form);
+      fetchForms();
+      createForm.reset();
+    });
+
+    async function fetchForms() {
+      const response = await axios.get('/api/forms');
+      formsList.innerHTML = '';
+      response.data.forEach(form => {
+        const formDiv = document.createElement('div');
+        formDiv.innerHTML = `
+          <h3>${form.title}</h3>
+          <ul>${form.questions.map(question => `<li>${question.question} - Type: ${question.type} ${question.choices ? '- Choices: ' + question.choices.join(', ') : ''}</li>`).join('')}</ul>
+        `;
+        formsList.appendChild(formDiv);
+      });
+    }
+
+    function showChoicesInput(select) {
+      const choicesInput = select.parentElement.querySelector('.choices-input');
+      if (select.value === 'multiple_choice') {
+        choicesInput.style.display = 'block';
+      } else {
+        choicesInput.style.display = 'none';
+      }
+    }
+
+    function handleTypeSelectChange(select) {
+      const questionInput = select.parentElement.querySelector('input[type="text"]');
+      questionInput.dataset.prevValue = questionInput.value;
+    }
+
+    function restoreQuestionText(select) {
+      const questionInput = select.parentElement.querySelector('input[type="text"]');
+      if (questionInput.dataset.prevValue) {
+        questionInput.value = questionInput.dataset.prevValue;
+        delete questionInput.dataset.prevValue;
+      }
+    }
+
+    function updatePreview() {
+      const questions = document.querySelectorAll('#questionsContainer .draggable');
+      const preview = Array.from(questions).map(question => {
+        const questionText = question.querySelector('input[type="text"]').value;
+        const questionType = question.querySelector('select').value;
+        if (questionType === 'multiple_choice') {
+          const choices = Array.from(question.querySelectorAll('.choices input')).map(input => input.value);
+          return `${questionText}: <select>${choices.map(choice => `<option>${choice}</option>`).join('')}</select>`;
+        } else {
+          return `${questionText}`;
+        }
+      }).join('<br>');
+      previewDiv.innerHTML = preview;
+    }
+
+    fetchForms();
+  </script>
+</body>
+</html>
