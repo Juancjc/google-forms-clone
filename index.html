@@ -217,101 +217,124 @@
     }
 
     function addChoice(button) {
-      const choicesDiv = button.parentElement.querySelector('.choices');
-      const choiceInput = document.createElement('input');
-      choiceInput.type = 'text';
-      choiceInput.name = 'choices[]';
-      choiceInput.placeholder = 'Choice';
-      choicesDiv.appendChild(choiceInput);
-      const removeChoiceBtn = document.createElement('button');
-      removeChoiceBtn.classList.add('remove-choice-btn');
-      removeChoiceBtn.type = 'button';
-      removeChoiceBtn.textContent = 'Remove';
-      removeChoiceBtn.onclick = function() {
-        choiceInput.remove();
-        removeChoiceBtn.remove();
-        updatePreview();
-      };
-      choicesDiv.appendChild(removeChoiceBtn);
+  const questionContainer = button.closest('.question-container');
+  const questionTypeSelect = questionContainer.querySelector('select');
+  const questionType = questionTypeSelect.options[questionTypeSelect.selectedIndex].value;
+
+  if (questionType === 'multiple_choice') {
+    const choicesDiv = button.parentElement.querySelector('.choices');
+    const choiceInput = document.createElement('input');
+    choiceInput.type = 'text';
+    choiceInput.name = 'choices[]';
+    choiceInput.placeholder = 'Choice';
+    choicesDiv.appendChild(choiceInput);
+    const removeChoiceBtn = document.createElement('button');
+    removeChoiceBtn.classList.add('remove-choice-btn');
+    removeChoiceBtn.type = 'button';
+    removeChoiceBtn.textContent = 'Remove';
+    removeChoiceBtn.onclick = function() {
+      choiceInput.remove();
+      removeChoiceBtn.remove();
       updatePreview();
-    }
+    };
+    choicesDiv.appendChild(removeChoiceBtn);
+    updatePreview();
+  }
+}
 
-    function addQuestion() {
-      const questionsContainer = document.getElementById('questionsContainer');
-      const questionDiv = document.createElement('div');
-      questionDiv.classList.add('question-container', 'draggable'); // Adiciona a classe 'draggable'
-      questionDiv.draggable = true; // Habilita a opção de arrastar
-      questionDiv.addEventListener('dragstart', handleDragStart);
-      questionDiv.addEventListener('dragenter', handleDragEnter);
-      questionDiv.addEventListener('dragover', handleDragOver);
-      questionDiv.addEventListener('dragleave', handleDragLeave);
-      questionDiv.addEventListener('drop', handleDrop);
-      questionDiv.addEventListener('dragend', handleDragEnd);
+function addQuestion() {
+  const questionsContainer = document.getElementById('questionsContainer');
+  const questionDiv = document.createElement('div');
+  questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
+  questionDiv.draggable = true;
+  questionDiv.addEventListener('dragstart', handleDragStart);
+  questionDiv.addEventListener('dragenter', handleDragEnter);
+  questionDiv.addEventListener('dragover', handleDragOver);
+  questionDiv.addEventListener('dragleave', handleDragLeave);
+  questionDiv.addEventListener('drop', handleDrop);
+  questionDiv.addEventListener('dragend', handleDragEnd);
 
-      const questionInput = document.createElement('input');
-      questionInput.type = 'text';
-      questionInput.name = 'questions[]';
-      questionInput.placeholder = 'Question';
+  const questionInputLabel = document.createElement('label');
+  questionInputLabel.textContent = 'Question:';
+  const questionInput = document.createElement('input');
+  questionInput.type = 'text';
+  questionInput.name = 'questions[]';
+  questionInput.placeholder = 'Type your question here';
 
-      const typeSelect = document.createElement('select');
-      typeSelect.name = 'types[]';
-      const types = ['text', 'number', 'date', 'file', 'multiple_choice'];
-      types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-        typeSelect.appendChild(option);
-      });
-      typeSelect.addEventListener('change', function() {
-        handleTypeSelectChange(this);
-        showChoicesInput(this);
-        updatePreview();
-      });
+  const typeInputLabel = document.createElement('label');
+  typeInputLabel.textContent = 'Type:';
+  const typeSelect = document.createElement('select');
+  typeSelect.name = 'types[]';
+  const types = ['text', 'number', 'date', 'file', 'multiple_choice'];
+  types.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+    typeSelect.appendChild(option);
+  });
+  typeSelect.addEventListener('change', function() {
+    handleTypeSelectChange(this);
+    showChoicesInput(this);
+    updatePreview();
+  });
 
-      const choicesInput = document.createElement('div');
-      choicesInput.classList.add('choices-input');
-      choicesInput.id = 'choicesInput'; // Adicionando ID para referência
-      const choicesDiv = document.createElement('div');
-      choicesDiv.classList.add('choices');
-      const addChoiceButton = document.createElement('button');
-      addChoiceButton.type = 'button';
-      addChoiceButton.textContent = 'Add Choice';
-      addChoiceButton.addEventListener('click', function() {
-        addChoice(this);
-      });
-      choicesInput.appendChild(choicesDiv);
-      choicesInput.appendChild(addChoiceButton);
+  const choicesInput = document.createElement('div');
+  choicesInput.classList.add('choices-input');
+  choicesInput.id = 'choicesInput';
+  const choicesDiv = document.createElement('div');
+  choicesDiv.classList.add('choices');
+  const addChoiceButton = document.createElement('button');
+  addChoiceButton.classList.add('add-choice-btn'); // Adicionando a classe para o botão
+  addChoiceButton.type = 'button';
+  addChoiceButton.textContent = 'Add Choice';
+  addChoiceButton.style.display = 'none'; // Inicialmente oculto
+  addChoiceButton.addEventListener('click', function() {
+    addChoice(this);
+  });
+  choicesInput.appendChild(choicesDiv);
+  choicesInput.appendChild(addChoiceButton);
 
-      const removeQuestionBtn = document.createElement('button');
-      removeQuestionBtn.classList.add('remove-question-btn');
-      removeQuestionBtn.type = 'button';
-      removeQuestionBtn.textContent = 'Remove';
-      removeQuestionBtn.onclick = function() {
-        questionDiv.remove();
-        updatePreview();
-      };
+  const removeQuestionBtn = document.createElement('button');
+  removeQuestionBtn.classList.add('remove-question-btn');
+  removeQuestionBtn.type = 'button';
+  removeQuestionBtn.textContent = 'Remove';
+  removeQuestionBtn.onclick = function() {
+    questionDiv.remove();
+    updatePreview();
+  };
 
-      questionDiv.appendChild(questionInput);
-      questionDiv.appendChild(typeSelect);
-      questionDiv.appendChild(choicesInput);
-      questionDiv.appendChild(removeQuestionBtn);
+  questionDiv.appendChild(questionInputLabel);
+  questionDiv.appendChild(questionInput);
+  questionDiv.appendChild(typeInputLabel);
+  questionDiv.appendChild(typeSelect);
+  questionDiv.appendChild(choicesInput);
+  questionDiv.appendChild(removeQuestionBtn);
 
-      questionsContainer.appendChild(questionDiv);
-      updatePreview();
-    }
+  questionsContainer.appendChild(questionDiv);
+  
+  // Chama a função para verificar a visibilidade do botão "Add Choice"
+  handleTypeSelectChange(typeSelect);
+}
 
-    function handleTypeSelectChange(select) {
-      const questionInput = select.parentElement.querySelector('input[type="text"]');
-      questionInput.dataset.prevValue = questionInput.value;
-    }
+function handleTypeSelectChange(select) {
+  const questionInput = select.parentElement.querySelector('input[type="text"]');
+  questionInput.dataset.prevValue = questionInput.value;
 
-    function restoreQuestionText(select) {
-      const questionInput = select.parentElement.querySelector('input[type="text"]');
-      if (questionInput.dataset.prevValue) {
-        questionInput.value = questionInput.dataset.prevValue;
-        delete questionInput.dataset.prevValue;
-      }
-    }
+  const addChoiceButton = select.parentElement.querySelector('.add-choice-btn');
+  if (select.value === 'multiple_choice') {
+    addChoiceButton.style.display = 'inline-block';
+  } else {
+    addChoiceButton.style.display = 'none';
+  }
+}
+
+function restoreQuestionText(select) {
+  const questionInput = select.parentElement.querySelector('input[type="text"]');
+  if (questionInput.dataset.prevValue) {
+    questionInput.value = questionInput.dataset.prevValue;
+    delete questionInput.dataset.prevValue;
+  }
+}
 
     function updatePreview() {
       const questions = document.querySelectorAll('#questionsContainer .question-container');
