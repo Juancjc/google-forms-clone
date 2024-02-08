@@ -1,371 +1,394 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Forms Clone</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Forms Clone</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-    input[type="text"],
-    select {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
 
-    .question-inputs {
-      display: flex;
-      align-items: center;
-    }
+      .question-inputs {
+        display: flex;
+        align-items: center;
+      }
 
-    .question-inputs input[type="text"] {
-      flex: 1;
-    }
+      .question-inputs input[type="text"] {
+        flex: 1;
+      }
 
-    .question-inputs select {
-      flex: 1;
-      margin-left: 10px;
-    }
+      .question-inputs select {
+        flex: 1;
+        margin-left: 10px;
+      }
 
-    button {
-      padding: 10px 20px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 4px;
-      background-color: #007bff;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+      button {
+        padding: 10px 20px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+      button:hover {
+        background-color: #0056b3;
+      }
 
-    #formsList {
-      margin-top: 20px;
-    }
+      #formsList {
+        margin-top: 20px;
+      }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
 
-    ul li {
-      margin-bottom: 5px;
-    }
-    /* Estilos CSS (mantidos da versão anterior) */
-    .choices-input {
-      margin-top: 5px;
-    }
-    .choice {
-      margin-bottom: 5px;
-    }
-    .choice button {
-      margin-left: 5px;
-    }
-        /* Estilos CSS (mantidos da versão anterior) */
-    .draggable {
-      cursor: move;
-      border-radius: 8px;
-      border: 2px solid #007bff;
-      margin-bottom: 20px;
-    }
-    .container {
-      position: relative;
-    }
-    .add-question-btn {
-      position: absolute;
-      top: 0;
-      right: -60px;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      background-color: #007bff;
-      color: #fff;
-      font-size: 20px;
-      border: none;
-      cursor: pointer;
-    }
-    .question-container {
-      position: relative;
-      margin-bottom: 20px;
-      cursor: move;
-    }
-    .remove-question-btn {
-      margin-left: 10px;
-      background-color: #ff4444;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .preview-btn {
-      margin-top: 20px;
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Google Forms Clone</h1>
+      ul li {
+        margin-bottom: 5px;
+      }
+      /* Estilos CSS (mantidos da versão anterior) */
+      .choices-input {
+        margin-top: 5px;
+      }
+      .choice {
+        margin-bottom: 5px;
+      }
+      .choice button {
+        margin-left: 5px;
+      }
+      /* Estilos CSS (mantidos da versão anterior) */
+      .draggable {
+        cursor: move;
+        border-radius: 8px;
+        border: 2px solid #007bff;
+        margin-bottom: 20px;
+      }
+      .container {
+        position: relative;
+      }
+      .add-question-btn {
+        position: absolute;
+        top: 0;
+        right: -60px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 20px;
+        border: none;
+        cursor: pointer;
+      }
+      .question-container {
+        position: relative;
+        margin-bottom: 20px;
+        cursor: move;
+      }
+      .remove-question-btn {
+        margin-left: 10px;
+        background-color: #ff4444;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      .preview-btn {
+        margin-top: 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      /* Estilos CSS */
+      .toolbox {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-right: 20px;
+        float: left;
+      }
+      .toolbox label {
+        display: block;
+        cursor: move;
+        padding: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+      }
+      .toolbox label:hover {
+        background-color: #e0e0e0;
+      }
+      #questionsContainer {
+        border: 1px solid #ccc;
+        min-height: 200px;
+        margin-left: 20px;
+        padding: 10px;
+      }
+      .question-container {
+        margin-bottom: 10px;
+      }
+      .question-title {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+        <h1>Google Forms Clone</h1>
+        
+        <!-- Seção de Ferramentas -->
+        <div class="toolbox">
+          <label draggable="true" ondragstart="drag(event)" data-type="text" class="btn-secondary">Text</label>
+          <label draggable="true" ondragstart="drag(event)" data-type="number" class="btn-secondary">Number</label>
+          <label draggable="true" ondragstart="drag(event)" data-type="date" class="btn-secondary">Date</label>
+          <label draggable="true" ondragstart="drag(event)" data-type="file" class="btn-secondary">File</label>
+          <label draggable="true" ondragstart="drag(event)" data-type="email" class="btn-secondary">Email</label>
+          <label draggable="true" ondragstart="drag(event)" data-type="select" class="btn-secondary">Select</label>
+        </div>
     
-    <form id="createForm">
-      <input type="text" name="title" placeholder="Title">
-      <div id="questionsContainer" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
-        <!-- Conteúdo das perguntas será adicionado aqui -->
+        <!-- Formulário de Criação -->
+        <form id="createForm">
+          <input type="text" name="title" placeholder="Title" class="btn-secondary">
+          <div id="questionsContainer" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <!-- Conteúdo das perguntas será adicionado aqui -->
+          </div>
+          <button type="button" onclick="addOption()" class="btn-secondary">+</button>
+          <button type="submit" class="btn-secondary">Create Form</button>
+        </form>
+        
+        <!-- Lista de Formulários -->
+        <div id="formsList"></div>
+        
+        <!-- Botão de Visualização -->
+        <button class="preview-btn" onclick="togglePreview()" class="btn-secondary">Preview</button>
+        <!-- Visualização -->
+        <div id="preview" style="display: none;"></div>
+    
+        <!-- Conteúdo para exibir quando não houver perguntas arrastadas -->
+        <div id="noQuestionsContent" style="display: none;">
+          <div class="d-flex flex-column align-items-center">
+            <div>
+              <img style="width: 150px;" src="{{ asset('assets/images/estrutura/sem_resultado.gif') }}" alt="não há resultados">
+            </div>
+            <div>
+              <span>Você não possui solicitações</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="add-question-btn" type="button" onclick="addQuestion()">+</button>
-      <button type="submit">Create Form</button>
-    </form>
-    
-    <div id="formsList"></div>
-    
-    <button class="preview-btn" onclick="togglePreview()">Preview</button>
-    <div id="preview" style="display: none;"></div>
-  </div>
-
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    let dragSrcEl = null;
-
-    function handleDragStart(e) {
-      dragSrcEl = this;
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', this.outerHTML);
-    }
-
-    function handleDragOver(e) {
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-      e.dataTransfer.dropEffect = 'move';
-      return false;
-    }
-
-    function handleDragEnter(e) {
-      this.classList.add('over');
-    }
-
-    function handleDragLeave(e) {
-      this.classList.remove('over');
-    }
-
-    function handleDrop(e) {
-      e.preventDefault();
-      if (dragSrcEl !== this) {
-        const dropTarget = this.parentElement;
-        const dragSource = dragSrcEl.parentElement;
-        const dropIndex = Array.from(dropTarget.children).indexOf(this);
-        const dragIndex = Array.from(dragSource.children).indexOf(dragSrcEl);
-
-        if (dropTarget === dragSource && dropIndex > dragIndex) {
-          dropTarget.insertBefore(dragSrcEl, this.nextSibling);
-        } else {
-          dropTarget.insertBefore(dragSrcEl, this);
-        }
-      }
-      updatePreview();
-    }
-
-    function handleDragEnd() {
-      this.classList.remove('over');
-    }
-
-    function allowDrop(e) {
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-      e.dataTransfer.dropEffect = 'move';
-      return false;
-    }
-
-    function addChoice(button) {
-  const questionContainer = button.closest('.question-container');
-  const questionTypeSelect = questionContainer.querySelector('select');
-  const questionType = questionTypeSelect.options[questionTypeSelect.selectedIndex].value;
-
-  if (questionType === 'multiple_choice') {
-    const choicesDiv = button.parentElement.querySelector('.choices');
-    const choiceInput = document.createElement('input');
-    choiceInput.type = 'text';
-    choiceInput.name = 'choices[]';
-    choiceInput.placeholder = 'Choice';
-    choicesDiv.appendChild(choiceInput);
-    const removeChoiceBtn = document.createElement('button');
-    removeChoiceBtn.classList.add('remove-choice-btn');
-    removeChoiceBtn.type = 'button';
-    removeChoiceBtn.textContent = 'Remove';
-    removeChoiceBtn.onclick = function() {
-      choiceInput.remove();
-      removeChoiceBtn.remove();
-      updatePreview();
-    };
-    choicesDiv.appendChild(removeChoiceBtn);
-    updatePreview();
-  }
-}
-
-function addQuestion() {
-  const questionsContainer = document.getElementById('questionsContainer');
-  const questionDiv = document.createElement('div');
-  questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
-  questionDiv.draggable = true;
-  questionDiv.addEventListener('dragstart', handleDragStart);
-  questionDiv.addEventListener('dragenter', handleDragEnter);
-  questionDiv.addEventListener('dragover', handleDragOver);
-  questionDiv.addEventListener('dragleave', handleDragLeave);
-  questionDiv.addEventListener('drop', handleDrop);
-  questionDiv.addEventListener('dragend', handleDragEnd);
-
-  const questionInputLabel = document.createElement('label');
-  questionInputLabel.textContent = 'Question:';
-  const questionInput = document.createElement('input');
-  questionInput.type = 'text';
-  questionInput.name = 'questions[]';
-  questionInput.placeholder = 'Type your question here';
-
-  const typeInputLabel = document.createElement('label');
-  typeInputLabel.textContent = 'Type:';
-  const typeSelect = document.createElement('select');
-  typeSelect.name = 'types[]';
-  const types = ['text', 'number', 'date', 'file', 'multiple_choice'];
-  types.forEach(type => {
-    const option = document.createElement('option');
-    option.value = type;
-    option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-    typeSelect.appendChild(option);
-  });
-  typeSelect.addEventListener('change', function() {
-    handleTypeSelectChange(this);
-    showChoicesInput(this);
-    updatePreview();
-  });
-
-  const choicesInput = document.createElement('div');
-  choicesInput.classList.add('choices-input');
-  choicesInput.id = 'choicesInput';
-  const choicesDiv = document.createElement('div');
-  choicesDiv.classList.add('choices');
-  const addChoiceButton = document.createElement('button');
-  addChoiceButton.classList.add('add-choice-btn'); // Adicionando a classe para o botão
-  addChoiceButton.type = 'button';
-  addChoiceButton.textContent = 'Add Choice';
-  addChoiceButton.style.display = 'none'; // Inicialmente oculto
-  addChoiceButton.addEventListener('click', function() {
-    addChoice(this);
-  });
-  choicesInput.appendChild(choicesDiv);
-  choicesInput.appendChild(addChoiceButton);
-
-  const removeQuestionBtn = document.createElement('button');
-  removeQuestionBtn.classList.add('remove-question-btn');
-  removeQuestionBtn.type = 'button';
-  removeQuestionBtn.textContent = 'Remove';
-  removeQuestionBtn.onclick = function() {
-    questionDiv.remove();
-    updatePreview();
-  };
-
-  questionDiv.appendChild(questionInputLabel);
-  questionDiv.appendChild(questionInput);
-  questionDiv.appendChild(typeInputLabel);
-  questionDiv.appendChild(typeSelect);
-  questionDiv.appendChild(choicesInput);
-  questionDiv.appendChild(removeQuestionBtn);
-
-  questionsContainer.appendChild(questionDiv);
+  </body>
+    <script>
+      let dragSrcEl = null;
   
-  // Chama a função para verificar a visibilidade do botão "Add Choice"
-  handleTypeSelectChange(typeSelect);
-}
-
-function handleTypeSelectChange(select) {
-  const questionInput = select.parentElement.querySelector('input[type="text"]');
-  questionInput.dataset.prevValue = questionInput.value;
-
-  const addChoiceButton = select.parentElement.querySelector('.add-choice-btn');
-  if (select.value === 'multiple_choice') {
-    addChoiceButton.style.display = 'inline-block';
-  } else {
-    addChoiceButton.style.display = 'none';
-  }
-}
-
-function restoreQuestionText(select) {
-  const questionInput = select.parentElement.querySelector('input[type="text"]');
-  if (questionInput.dataset.prevValue) {
-    questionInput.value = questionInput.dataset.prevValue;
-    delete questionInput.dataset.prevValue;
-  }
-}
-
-    function updatePreview() {
-      const questions = document.querySelectorAll('#questionsContainer .question-container');
-      const preview = Array.from(questions).map(question => {
-        const questionText = question.querySelector('input[type="text"]').value;
-        const questionType = question.querySelector('select').value;
-        if (questionType === 'multiple_choice') {
-          const choices = Array.from(question.querySelectorAll('.choices input')).map(input => input.value);
-          const choicesHtml = choices.map(choice => `<div>${choice}<button class="remove-choice-btn" type="button" onclick="removeChoice(this)">Remove</button></div>`).join('');
-          return `${questionText}: ${choicesHtml}`;
-        } else {
-          return `${questionText}`;
+      function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+        e.dataTransfer.setData('text/plain', this.dataset.type);
+      }
+  
+      function handleDragOver(e) {
+        if (e.preventDefault) {
+          e.preventDefault();
         }
-      }).join('<br>');
-      document.getElementById('preview').innerHTML = preview;
-    }
-
-    function removeChoice(button) {
-      const choiceDiv = button.parentElement;
-      choiceDiv.remove();
-      updatePreview();
-    }
-
-    function togglePreview() {
-      const previewDiv = document.getElementById('preview');
-      if (previewDiv.style.display === 'none') {
-        previewDiv.style.display = 'block';
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+      }
+  
+      function handleDragEnter(e) {
+        this.classList.add('over');
+      }
+  
+      function handleDragLeave(e) {
+        this.classList.remove('over');
+      }
+  
+      function handleDrop(e) {
+        e.preventDefault();
+        if (dragSrcEl !== this) {
+          const dropTarget = this.parentElement;
+          const dragSource = dragSrcEl.parentElement;
+          const dropIndex = Array.from(dropTarget.children).indexOf(this);
+          const dragIndex = Array.from(dragSource.children).indexOf(dragSrcEl);
+  
+          if (dropTarget === dragSource && dropIndex > dragIndex) {
+            dropTarget.insertBefore(dragSrcEl, this.nextSibling);
+          } else {
+            dropTarget.insertBefore(dragSrcEl, this);
+          }
+        }
+        addQuestionWithInputType(e.dataTransfer.getData('text/plain'));
+        updatePreview();
+      }
+  
+      function handleDragEnd() {
+        this.classList.remove('over');
+      }
+  
+      function allowDrop(e) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+      }
+      function checkNoQuestions() {
+      const questionsContainer = document.getElementById('questionsContainer');
+      const noQuestionsContent = document.getElementById('noQuestionsContent');
+      if (questionsContainer.children.length === 0) {
+        noQuestionsContent.style.display = 'block';
       } else {
-        previewDiv.style.display = 'none';
+        noQuestionsContent.style.display = 'none';
       }
     }
-  </script>
-</body>
-</html>
+      function addQuestionWithInputType(inputType) {
+        const questionsContainer = document.getElementById('questionsContainer');
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
+        questionDiv.draggable = true;
+        questionDiv.addEventListener('dragstart', handleDragStart);
+        questionDiv.addEventListener('dragenter', handleDragEnter);
+        questionDiv.addEventListener('dragover', handleDragOver);
+        questionDiv.addEventListener('dragleave', handleDragLeave);
+        questionDiv.addEventListener('drop', handleDrop);
+        questionDiv.addEventListener('dragend', handleDragEnd);
+  
+        const questionTitle = document.createElement('div');
+        questionTitle.classList.add('question-title');
+        questionTitle.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
+  
+        const questionInputLabel = document.createElement('label');
+        questionInputLabel.textContent = 'Question:';
+        const questionInput = document.createElement('input');
+        questionInput.type = 'text';
+        questionInput.name = 'questions[]';
+        questionInput.placeholder = 'Type your question here';
+  
+        const typeInputLabel = document.createElement('label');
+        typeInputLabel.textContent = 'Type:';
+        const typeSelect = document.createElement('select');
+        typeSelect.name = 'types[]';
+        const option = document.createElement('option');
+        option.value = inputType;
+        option.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
+        typeSelect.appendChild(option);
+        typeSelect.disabled = true;
+  
+        if (inputType === 'select') {
+          // Se for do tipo select, adiciona campos de opção
+          const optionInputLabel = document.createElement('label');
+          optionInputLabel.textContent = 'Options:';
+          const optionInput = document.createElement('input');
+          optionInput.type = 'text';
+          optionInput.placeholder = 'Option';
+          optionInput.classList.add('option-input');
+          optionInput.classList.add('show'); // Exibe o primeiro campo de opção
+          const addOptionBtn = document.createElement('button');
+          addOptionBtn.textContent = '+';
+          addOptionBtn.type = 'button'; // Alterado de submit para button
+          addOptionBtn.onclick = function() {
+            const newOptionInput = optionInput.cloneNode(true);
+            newOptionInput.value = ''; // Limpa o valor do novo campo de opção
+            newOptionInput.classList.remove('show'); // Esconde o novo campo de opção
+            this.parentNode.insertBefore(newOptionInput, this);
+          };
+  
+          questionDiv.appendChild(optionInputLabel);
+          questionDiv.appendChild(optionInput);
+          questionDiv.appendChild(addOptionBtn);
+        }
+  
+        const removeQuestionBtn = document.createElement('button');
+        removeQuestionBtn.classList.add('remove-question-btn');
+        removeQuestionBtn.type = 'button';
+        removeQuestionBtn.textContent = 'Remove';
+        removeQuestionBtn.onclick = function() {
+          questionDiv.remove();
+          updatePreview();
+        };
+  
+        questionDiv.appendChild(questionTitle);
+        questionDiv.appendChild(questionInputLabel);
+        questionDiv.appendChild(questionInput);
+        questionDiv.appendChild(typeInputLabel);
+        questionDiv.appendChild(typeSelect);
+        questionsContainer.appendChild(questionDiv);
+        updatePreview();
+      }
+  
+      function updatePreview() {
+        const questions = document.querySelectorAll('#questionsContainer .question-container');
+        const preview = Array.from(questions).map(question => {
+          const questionText = question.querySelector('input[type="text"]').value;
+          const questionType = question.querySelector('select').value;
+          if (questionType === 'select') {
+            const options = Array.from(question.querySelectorAll('.option-input')).map(input => input.value);
+            return `${questionText}: ${options.join(', ')}`;
+          } else {
+            return `${questionText}`;
+          }
+        }).join('<br>');
+        document.getElementById('preview').innerHTML = preview;
+      }
+  
+      function togglePreview() {
+        const previewDiv = document.getElementById('preview');
+        if (previewDiv.style.display === 'none') {
+          previewDiv.style.display = 'block';
+        } else {
+          previewDiv.style.display = 'none';
+        }
+      }
+  
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.dataset.type);
+      }
+  
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        addQuestionWithInputType(data);
+      }
+    </script>
+  </body>
+  </html>
