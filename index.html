@@ -282,6 +282,10 @@
       }
     }
     function addQuestionWithInputType(inputType) {
+      if (inputType !== 'undefined') {
+       
+      
+      
       const questionsContainer = document.getElementById('questionsContainer');
       const questionDiv = document.createElement('div');
       questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
@@ -373,6 +377,7 @@
   
       questionsContainer.appendChild(questionDiv);
       updatePreview();
+    }
   }
   
   
@@ -407,7 +412,13 @@
       function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
-        addQuestionWithInputType(data);
+        
+        if(data === 'undefined'){
+          data = null;
+        }else{
+          addQuestionWithInputType(data);
+        }
+        
       }
     </script>
   </body>
