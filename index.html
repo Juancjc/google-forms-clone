@@ -124,13 +124,6 @@
         margin-bottom: 20px;
         cursor: move;
       }
-      .remove-question-btn {
-        margin-left: 10px;
-        background-color: #ff4444;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
       .preview-btn {
         margin-top: 20px;
         background-color: #28a745;
@@ -170,6 +163,13 @@
       .question-title {
         font-weight: bold;
       }
+      .remove-question-btn {
+        margin-left: auto; /* Isso empurra o botão para o lado direito */
+        background-color: #ff4444;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
     </style>
   </head>
   <body>
@@ -281,80 +281,100 @@
         noQuestionsContent.style.display = 'none';
       }
     }
-      function addQuestionWithInputType(inputType) {
-        const questionsContainer = document.getElementById('questionsContainer');
-        const questionDiv = document.createElement('div');
-        questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
-        questionDiv.draggable = true;
-        questionDiv.addEventListener('dragstart', handleDragStart);
-        questionDiv.addEventListener('dragenter', handleDragEnter);
-        questionDiv.addEventListener('dragover', handleDragOver);
-        questionDiv.addEventListener('dragleave', handleDragLeave);
-        questionDiv.addEventListener('drop', handleDrop);
-        questionDiv.addEventListener('dragend', handleDragEnd);
+    function addQuestionWithInputType(inputType) {
+      const questionsContainer = document.getElementById('questionsContainer');
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('question-container', 'draggable', 'input_box_question');
+      questionDiv.draggable = true;
+      questionDiv.addEventListener('dragstart', handleDragStart);
+      questionDiv.addEventListener('dragenter', handleDragEnter);
+      questionDiv.addEventListener('dragover', handleDragOver);
+      questionDiv.addEventListener('dragleave', handleDragLeave);
+      questionDiv.addEventListener('drop', handleDrop);
+      questionDiv.addEventListener('dragend', handleDragEnd);
   
+      const questionTitle = document.createElement('div');
+      questionTitle.classList.add('question-title');
+      questionTitle.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
+  
+      const questionInputLabel = document.createElement('label');
+      questionInputLabel.textContent = 'Question:';
+      const questionInput = document.createElement('input');
+      questionInput.type = 'text';
+      questionInput.name = 'questions[]';
+      questionInput.placeholder = 'Type your question here';
+  
+      const typeInputLabel = document.createElement('label');
+      typeInputLabel.textContent = 'Type:';
+      const typeSelect = document.createElement('select');
+      typeSelect.name = 'types[]';
+      const option = document.createElement('option');
+      option.value = inputType;
+      option.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
+      typeSelect.appendChild(option);
+      typeSelect.disabled = true;
+      questionDiv.appendChild(questionTitle);
+      questionDiv.appendChild(questionInputLabel);
+      questionDiv.appendChild(questionInput);
+      questionDiv.appendChild(typeInputLabel);
+      questionDiv.appendChild(typeSelect);
+      if (inputType === 'select') {
+        // Se for do tipo select, adiciona campos de opção
+        const optionInputLabel = document.createElement('label');
+        optionInputLabel.textContent = 'Options:';
+        
         const questionTitle = document.createElement('div');
         questionTitle.classList.add('question-title');
         questionTitle.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
+        
+        const optionContainer = document.createElement('div'); // Container para cada opção
+        const addOptionBtn = document.createElement('button');
+        addOptionBtn.textContent = '+';
+        addOptionBtn.type = 'button'; // Alterado de submit para button
+        addOptionBtn.onclick = function () {
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.placeholder = 'Option';
+            optionInput.classList.add('option-input');
+            optionInput.classList.add('show'); // Exibe o primeiro campo de opção
+            
+            const removeOptionBtn = document.createElement('button');
+            removeOptionBtn.textContent = 'X';
+            removeOptionBtn.type = 'button';
+            removeOptionBtn.onclick = function () {
+                const optionToRemove = this.previousSibling;
+                optionToRemove.remove(); // Remove o campo de opção
+                this.remove(); // Remove o botão "X"
+            };
+            
+            optionContainer.appendChild(optionInput); // Adiciona o campo de opção ao container
+            optionContainer.appendChild(removeOptionBtn); // Adiciona o botão "X" ao container
+        };
+
+        optionContainer.appendChild(addOptionBtn); // Adiciona o botão "+" ao container
+
+        questionDiv.appendChild(questionTitle);
+        questionDiv.appendChild(optionInputLabel);
+        questionDiv.appendChild(optionContainer); // Adiciona o container de opção ao questionDiv
+    }
   
-        const questionInputLabel = document.createElement('label');
-        questionInputLabel.textContent = 'Question:';
-        const questionInput = document.createElement('input');
-        questionInput.type = 'text';
-        questionInput.name = 'questions[]';
-        questionInput.placeholder = 'Type your question here';
-  
-        const typeInputLabel = document.createElement('label');
-        typeInputLabel.textContent = 'Type:';
-        const typeSelect = document.createElement('select');
-        typeSelect.name = 'types[]';
-        const option = document.createElement('option');
-        option.value = inputType;
-        option.textContent = inputType.charAt(0).toUpperCase() + inputType.slice(1);
-        typeSelect.appendChild(option);
-        typeSelect.disabled = true;
-  
-        if (inputType === 'select') {
-          // Se for do tipo select, adiciona campos de opção
-          const optionInputLabel = document.createElement('label');
-          optionInputLabel.textContent = 'Options:';
-          const optionInput = document.createElement('input');
-          optionInput.type = 'text';
-          optionInput.placeholder = 'Option';
-          optionInput.classList.add('option-input');
-          optionInput.classList.add('show'); // Exibe o primeiro campo de opção
-          const addOptionBtn = document.createElement('button');
-          addOptionBtn.textContent = '+';
-          addOptionBtn.type = 'button'; // Alterado de submit para button
-          addOptionBtn.onclick = function() {
-            const newOptionInput = optionInput.cloneNode(true);
-            newOptionInput.value = ''; // Limpa o valor do novo campo de opção
-            newOptionInput.classList.remove('show'); // Esconde o novo campo de opção
-            this.parentNode.insertBefore(newOptionInput, this);
-          };
-  
-          questionDiv.appendChild(optionInputLabel);
-          questionDiv.appendChild(optionInput);
-          questionDiv.appendChild(addOptionBtn);
-        }
-  
-        const removeQuestionBtn = document.createElement('button');
-        removeQuestionBtn.classList.add('remove-question-btn');
-        removeQuestionBtn.type = 'button';
-        removeQuestionBtn.textContent = 'Remove';
-        removeQuestionBtn.onclick = function() {
+
+      
+      const removeQuestionBtn = document.createElement('button');
+      removeQuestionBtn.classList.add('remove-question-btn');
+      removeQuestionBtn.type = 'button';
+      removeQuestionBtn.textContent = 'Remover Pergunta';
+      removeQuestionBtn.onclick = function () {
           questionDiv.remove();
           updatePreview();
-        };
+          checkNoQuestions();
+      };
+      questionDiv.appendChild(removeQuestionBtn);
   
-        questionDiv.appendChild(questionTitle);
-        questionDiv.appendChild(questionInputLabel);
-        questionDiv.appendChild(questionInput);
-        questionDiv.appendChild(typeInputLabel);
-        questionDiv.appendChild(typeSelect);
-        questionsContainer.appendChild(questionDiv);
-        updatePreview();
-      }
+      questionsContainer.appendChild(questionDiv);
+      updatePreview();
+  }
+  
   
       function updatePreview() {
         const questions = document.querySelectorAll('#questionsContainer .question-container');
